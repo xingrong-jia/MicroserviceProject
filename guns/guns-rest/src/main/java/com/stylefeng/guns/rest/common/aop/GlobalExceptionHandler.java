@@ -30,6 +30,7 @@ public class GlobalExceptionHandler extends BaseControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorTip jwtException(JwtException e) {
-        return new ErrorTip(BizExceptionEnum.TOKEN_ERROR.getCode(), BizExceptionEnum.TOKEN_ERROR.getMessage());
+        return new ErrorTip(BizExceptionEnum.TOKEN_ERROR.getCode(),
+                BizExceptionEnum.TOKEN_ERROR.getMessage());
     }
 }

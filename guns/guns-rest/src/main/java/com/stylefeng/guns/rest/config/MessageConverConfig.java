@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class MessageConverConfig {
 
     @Bean
-    @ConditionalOnProperty(prefix = RestProperties.REST_PREFIX, name = "sign-open", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = RestProperties.REST_PREFIX, name = "sign-open",
+            havingValue = "true", matchIfMissing = true)
     public WithSignMessageConverter withSignMessageConverter() {
         WithSignMessageConverter withSignMessageConverter = new WithSignMessageConverter();
         DefaultFastjsonConfig defaultFastjsonConfig = new DefaultFastjsonConfig();
