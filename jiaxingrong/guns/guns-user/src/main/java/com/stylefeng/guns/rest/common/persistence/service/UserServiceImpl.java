@@ -108,4 +108,10 @@ public class UserServiceImpl implements UserService {
         }
         return userInfoVo;
     }
+
+    @Override
+    public Integer queryUserId(String username) {
+        Integer uuid = userTMapper.selectUuidByUserName(username);
+        return uuid;
+    }
 }

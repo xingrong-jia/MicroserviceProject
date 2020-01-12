@@ -6,6 +6,7 @@ import com.stylefeng.guns.core.util.RenderUtil;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.config.properties.JwtProperties;
 import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,20 +52,22 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         urlList = jwtProperties.getUrlList();
         String uri = request.getRequestURI();
-        if (!uri.contains(urlList.get(0))||!urlList.contains(uri)) {
+        if (!uri.contains("/alipay/")&&!urlList.contains(uri)&&!uri.contains(urlList.get(0))) {
             final String requestHeader = request.getHeader(jwtProperties.getHeader());
             String authToken = null;
             if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
                 authToken = requestHeader.substring(7);
-                jwtTokenUtil.parseToken(authToken);//如果token不正确，会报JwtException异常，且被异常处理器处理
-
+                try {
+                    jwtTokenUtil.parseToken(authToken);
+                }catch (ExpiredJwtException e){
+                    throw new JwtException("token失效");
+                }
                 String username = jwtTokenUtil.getUsernameFromToken(authToken);
 
                 String redisToken = (String) redisTemplate.opsForValue().get(username);
                 if (!StringTool.isNotNull(redisToken)) return;
                 redisTemplate.opsForValue().set(username,authToken,1800, TimeUnit.SECONDS);
-            }
-
+            }else return;
         }
         chain.doFilter(request, response);
     }

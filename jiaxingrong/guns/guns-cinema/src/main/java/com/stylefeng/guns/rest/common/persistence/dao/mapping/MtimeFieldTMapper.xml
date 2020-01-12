@@ -13,5 +13,9 @@
         <result column="hall_name" property="hallName" />
         <result column="price" property="price" />
     </resultMap>
+    <select id="selectMtimeFieldTByCinemaIdAndFieldId"
+            resultType="com.stylefeng.guns.rest.common.persistence.model.MtimeFieldT">
+        select * from mtime_field_t where cinema_id = #{cinemaId} and film_id = #{fieldId}
+    </select>
 
 </mapper>

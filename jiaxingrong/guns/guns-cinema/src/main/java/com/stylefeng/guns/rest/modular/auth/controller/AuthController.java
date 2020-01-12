@@ -19,16 +19,16 @@ import javax.annotation.Resource;
  * @author fengshuonan
  * @Date 2017/8/24 14:22
  */
-@RestController
+//@RestController
 public class AuthController {
 
-    @Autowired
+/*    //@Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Resource(name = "simpleValidator")
+    //@Resource(name = "simpleValidator")
     private IReqValidator reqValidator;
 
-    @RequestMapping(value = "${jwt.auth-path}")
+    //@RequestMapping(value = "${jwt.auth-path}")
     public ResponseEntity<?> createAuthenticationToken(AuthRequest authRequest) {
 
         boolean validate = reqValidator.validate(authRequest);
@@ -40,5 +40,5 @@ public class AuthController {
         } else {
             throw new GunsException(BizExceptionEnum.AUTH_REQUEST_ERROR);
         }
-    }
+    }*/
 }

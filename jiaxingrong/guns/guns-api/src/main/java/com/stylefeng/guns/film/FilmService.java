@@ -20,4 +20,6 @@ public interface FilmService {
     List<FilmInfo> getFilms(FilmReqVo reqVo);
 
     FilmDetailsVo getFilmDetails(String idOrName);
+
+    String quereFilmNameByFilmId(Integer film_id);
 }

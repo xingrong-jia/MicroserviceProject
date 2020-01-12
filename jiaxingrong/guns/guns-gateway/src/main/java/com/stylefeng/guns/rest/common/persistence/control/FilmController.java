@@ -52,7 +52,7 @@ public class FilmController {
     public Result getFilms(FilmReqVo reqVo) {
         List<FilmInfo> filmInfos = filmService.getFilms(reqVo);
         if (filmInfos == null) return new Result(999, "系统出现异常，请联系管理员!");
-        if (filmInfos.size() == 0) return new Result(1, "查询失败，无banner可加载!");
+        if (filmInfos.size() == 0) return new Result(1, "查询失败，无影片可加载!");
         return Result.ok(filmInfos);
     }
 

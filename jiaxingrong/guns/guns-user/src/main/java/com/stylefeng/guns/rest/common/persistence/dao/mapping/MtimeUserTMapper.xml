@@ -22,5 +22,8 @@
     <select id="selectMtimeUserTByUserNameAndPassword" resultType="com.stylefeng.guns.rest.common.persistence.model.MtimeUserT">
         select UUID, user_name, user_pwd, nick_name, user_sex, birthday, email, user_phone, address, head_url, biography, life_state, begin_time, update_time from mtime_user_t where user_name=#{userName} and user_pwd=#{password}
     </select>
+    <select id="selectUuidByUserName" resultType="java.lang.Integer">
+        select UUID from mtime_user_t where user_name=#{username}
+    </select>
 
 </mapper>

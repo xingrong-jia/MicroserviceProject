@@ -8,5 +8,11 @@
         <result column="show_name" property="showName" />
         <result column="seat_address" property="seatAddress" />
     </resultMap>
+    <select id="selectMtimeHallDictTByHallName" resultMap="BaseResultMap">
+        select * from mtime_hall_dict_t where show_name = #{hallName}
+    </select>
+    <select id="selectSeat_addressByShow_name" resultType="java.lang.String">
+        select seat_address from mtime_hall_dict_t where show_name=#{hallName}
+    </select>
 
 </mapper>

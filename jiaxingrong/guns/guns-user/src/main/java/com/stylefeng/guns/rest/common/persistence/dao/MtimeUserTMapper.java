@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Param;
 public interface MtimeUserTMapper extends BaseMapper<MtimeUserT> {
 
     MtimeUserT selectMtimeUserTByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
+
+    Integer selectUuidByUserName(@Param("username") String username);
 }

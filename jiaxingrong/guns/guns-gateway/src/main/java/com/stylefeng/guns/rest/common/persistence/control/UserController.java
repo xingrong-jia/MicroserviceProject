@@ -11,6 +11,7 @@ import com.stylefeng.guns.user.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,23 +54,22 @@ public class UserController {
     }
 
     @RequestMapping("logout")
-    public Result logout(HttpServletRequest request) {
-        String header = request.getHeader(jwtProperties.getHeader());
+    public Result logout(@RequestHeader String Authorization) {
+        String header = Authorization;
         if (StringTool.isNotNull(header)) {
-            String authToken = null;
-            if (header != null && header.startsWith("Bearer ")) {
+            String authToken = "";
+            if (header.startsWith("Bearer ")) {
                 authToken = header.substring(7);
-                jwtTokenUtil.parseToken(authToken);//如果token不正确，会报JwtException异常，且被异常处理器处理
-                Boolean tokenExpired = jwtTokenUtil.isTokenExpired(authToken);//验证是否过期
-                if (!tokenExpired) {
-                    String username = jwtTokenUtil.getUsernameFromToken(authToken);
+                String username = jwtTokenUtil.getUsernameFromToken(authToken);
+                Object o = redisTemplate.opsForValue().get(username);
+                if (o != null) {
                     Boolean delete = redisTemplate.delete(username);
                     if (delete) return Result.ok("成功退出！");
-                    else return new Result(999, "系统出现异常，请联系管理员!");
+                    else return Result.failure();
                 }
             }
         }
-        return new Result(1, "退出失败，用户尚未登陆");
+        return new Result(700, "查询失败，用户尚未登陆");
     }
 
     @RequestMapping("check")
@@ -85,29 +85,26 @@ public class UserController {
     }
 
     @RequestMapping("getUserInfo")
-    public Result getUserInfo(HttpServletRequest request) {
-        String header = request.getHeader(jwtProperties.getHeader());
-        if (StringTool.isNotNull(header)){
+    public Result getUserInfo(@RequestHeader String Authorization) {
+        String header = Authorization;
+        if (StringTool.isNotNull(header)) {
             String authToken = null;
-            if (header != null && header.startsWith("Bearer ")) {
+            if (header.startsWith("Bearer ")) {
                 authToken = header.substring(7);
-                jwtTokenUtil.parseToken(authToken);//如果token不正确，会报JwtException异常，且被异常处理器处理
-                Boolean tokenExpired = jwtTokenUtil.isTokenExpired(authToken);//验证是否过期
-                if (!tokenExpired){
-                    String username = jwtTokenUtil.getUsernameFromToken(authToken);
-                    UserInfoVo userInfoVo= userService.getUserInfo(username);
-                    if (userInfoVo!=null) return Result.ok(userInfoVo);
-                    else return new Result(999, "系统出现异常，请联系管理员!");
-                }
+                String username = jwtTokenUtil.getUsernameFromToken(authToken);
+                UserInfoVo userInfoVo = userService.getUserInfo(username);
+                if (userInfoVo != null) return Result.ok(userInfoVo);
+                else return Result.failure();
+
             }
         }
-        return new Result(1,"查询失败，用户尚未登陆");
+        return new Result(700, "查询失败，用户尚未登陆");
     }
 
     @RequestMapping("updateUserInfo")
     public Result updateUserInfo(UserInfoVo userInfoVo) {
         int modifyUser = userService.modifyUserInformation(userInfoVo);
-        if (modifyUser == 1) return Result.ok(new UserInfoVo());
+        if (modifyUser == 1) return Result.ok(userInfoVo);
         else if (modifyUser == 0) return new Result(1, "用户信息修改失败!");
         else return new Result(999, "系统出现异常，请联系管理员!");
     }

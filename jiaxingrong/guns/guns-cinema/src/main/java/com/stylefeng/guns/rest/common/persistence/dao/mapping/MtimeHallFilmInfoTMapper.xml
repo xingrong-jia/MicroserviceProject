@@ -13,5 +13,13 @@
         <result column="actors" property="actors" />
         <result column="img_address" property="imgAddress" />
     </resultMap>
+    <select id="selectHallFilmTnfoByFilmId" resultMap="BaseResultMap">
+        select UUID, film_id, film_name, film_length, film_cats, film_language, actors, img_address
+        from mtime_hall_film_info_t where film_id = #{filmId}
+    </select>
+    <select id="selectFilmNameByFilmName" resultType="java.lang.String">
+        select film_name
+        from mtime_hall_film_info_t where film_id = #{filmId}
+    </select>
 
 </mapper>

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2020-01-10
  */
 @TableName("mtime_field_t")
-public class MtimeFieldT extends Model<MtimeFieldT> {
+public  class MtimeFieldT extends Model<MtimeFieldT> {
 
     private static final long serialVersionUID = 1L;
 

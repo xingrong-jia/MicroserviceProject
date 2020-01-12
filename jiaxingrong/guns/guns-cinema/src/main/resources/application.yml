@@ -34,7 +34,7 @@ spring:
     registry: zookeeper://localhost:2181
     protocol:
       name: dubbo
-      port: 2088304
+      port: 20883
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convert_To_Null&serverTimezone=GMT%2B8
       username: root

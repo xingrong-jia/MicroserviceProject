@@ -12,3 +12,4 @@ public class GunsCinemaApplication {
         SpringApplication.run(GunsCinemaApplication.class, args);
     }
 }
+

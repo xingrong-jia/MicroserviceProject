@@ -19,4 +19,6 @@ public interface UserService {
     Boolean validate(String userName, String password);
 
     UserInfoVo getUserInfo(String username);
+
+    Integer queryUserId(String username);
 }

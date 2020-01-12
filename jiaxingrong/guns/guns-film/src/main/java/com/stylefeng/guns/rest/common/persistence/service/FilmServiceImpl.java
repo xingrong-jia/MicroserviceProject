@@ -107,7 +107,7 @@ public class FilmServiceImpl implements FilmService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("film_status", reqVo.getShowType());
         if (reqVo.getCatId() != 99) {
-            map.put("film_cats", reqVo.getCatId());
+            filmTWrapper.like("film_cats","#"+reqVo.getCatId()+"#");
         }
         if (reqVo.getSourceId() != 99) {
             map.put("film_area", reqVo.getSourceId());
@@ -214,6 +214,13 @@ public class FilmServiceImpl implements FilmService {
         info04.setImgVO(imgVo);
         filmDetailsVo.setInfo04(info04);
         return filmDetailsVo;
+    }
+
+    @Override
+    public String quereFilmNameByFilmId(Integer film_id) {
+        MtimeFilmT mtimeFilmT = filmTMapper.selectById(film_id);
+        if (mtimeFilmT!=null) return mtimeFilmT.getFilmName();
+        return null;
     }
 
     private Map<String, String> getImgVo(String imgVoStr) {
